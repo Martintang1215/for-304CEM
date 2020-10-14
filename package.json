@@ -1,16 +1,16 @@
 {
-  "_from": "mime",
-  "_id": "mime@2.4.6",
+  "_from": "mongodb",
+  "_id": "mongodb@3.6.1",
   "_inBundle": false,
-  "_integrity": "sha512-RZKhC3EmpBchfTGBVb8fb+RL2cWyw/32lshnsETttkBAyAUXSGHxbEJWWRXc751DrIxG1q04b8QwMbAwkRPpUA==",
-  "_location": "/mime",
+  "_integrity": "sha512-uH76Zzr5wPptnjEKJRQnwTsomtFOU/kQEU8a9hKHr2M7y9qVk7Q4Pkv0EQVp88742z9+RwvsdTw6dRjDZCNu1g==",
+  "_location": "/mongodb",
   "_phantomChildren": {},
   "_requested": {
     "type": "tag",
     "registry": true,
-    "raw": "mime",
-    "name": "mime",
-    "escapedName": "mime",
+    "raw": "mongodb",
+    "name": "mongodb",
+    "escapedName": "mongodb",
     "rawSpec": "",
     "saveSpec": null,
     "fetchSpec": "latest"
@@ -19,64 +19,93 @@
     "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/mime/-/mime-2.4.6.tgz",
-  "_shasum": "e5b407c90db442f2beb5b162373d07b69affa4d1",
-  "_spec": "mime",
-  "_where": "C:\\Users\\67674\\Desktop\\noed_study",
-  "author": {
-    "name": "Robert Kieffer",
-    "email": "robert@broofa.com",
-    "url": "http://github.com/broofa"
-  },
-  "bin": {
-    "mime": "cli.js"
-  },
+  "_resolved": "https://registry.npmjs.org/mongodb/-/mongodb-3.6.1.tgz",
+  "_shasum": "2c5cc2a81456ba183e8c432d80e78732cc72dabd",
+  "_spec": "mongodb",
+  "_where": "C:\\Users\\67674\\Desktop\\shopping",
   "bugs": {
-    "url": "https://github.com/broofa/mime/issues"
+    "url": "https://github.com/mongodb/node-mongodb-native/issues"
   },
   "bundleDependencies": false,
-  "contributors": [],
-  "dependencies": {},
+  "dependencies": {
+    "bl": "^2.2.0",
+    "bson": "^1.1.4",
+    "denque": "^1.4.1",
+    "require_optional": "^1.0.1",
+    "safe-buffer": "^5.1.2",
+    "saslprep": "^1.0.0"
+  },
   "deprecated": false,
-  "description": "A comprehensive library for mime-type mapping",
+  "description": "The official MongoDB driver for Node.js",
   "devDependencies": {
-    "benchmark": "*",
-    "chalk": "*",
-    "eslint": "*",
-    "mime-db": "1.44.0",
-    "mime-score": "1.2.0",
-    "mime-types": "2.1.27",
-    "mocha": "7.1.2",
-    "runmd": "*",
-    "standard-version": "7.1.0"
+    "chai": "^4.1.1",
+    "chai-subset": "^1.6.0",
+    "chalk": "^2.4.2",
+    "co": "4.6.0",
+    "coveralls": "^2.11.6",
+    "eslint": "^4.5.0",
+    "eslint-plugin-prettier": "^2.2.0",
+    "istanbul": "^0.4.5",
+    "jsdoc": "3.5.5",
+    "lodash.camelcase": "^4.3.0",
+    "mocha": "5.2.0",
+    "mocha-sinon": "^2.1.0",
+    "mongodb-extjson": "^2.1.1",
+    "mongodb-mock-server": "^1.0.1",
+    "prettier": "^1.19.1",
+    "semver": "^5.5.0",
+    "sinon": "^4.3.0",
+    "sinon-chai": "^3.2.0",
+    "snappy": "^6.3.4",
+    "standard-version": "^4.4.0",
+    "util.promisify": "^1.0.1",
+    "worker-farm": "^1.5.0",
+    "wtfnode": "^0.8.0",
+    "yargs": "^14.2.0"
   },
   "engines": {
-    "node": ">=4.0.0"
+    "node": ">=4"
   },
   "files": [
     "index.js",
-    "lite.js",
-    "Mime.js",
-    "cli.js",
-    "/types"
+    "lib"
   ],
-  "homepage": "https://github.com/broofa/mime#readme",
+  "homepage": "https://github.com/mongodb/node-mongodb-native",
   "keywords": [
-    "util",
-    "mime"
+    "mongodb",
+    "driver",
+    "official"
   ],
-  "license": "MIT",
-  "name": "mime",
+  "license": "Apache-2.0",
+  "main": "index.js",
+  "name": "mongodb",
+  "optionalDependencies": {
+    "saslprep": "^1.0.0"
+  },
+  "peerOptionalDependencies": {
+    "kerberos": "^1.1.0",
+    "mongodb-client-encryption": "^1.0.0",
+    "mongodb-extjson": "^2.1.2",
+    "snappy": "^6.3.4",
+    "bson-ext": "^2.0.0"
+  },
   "repository": {
-    "url": "git+https://github.com/broofa/mime.git",
-    "type": "git"
+    "type": "git",
+    "url": "git+ssh://git@github.com/mongodb/node-mongodb-native.git"
   },
   "scripts": {
-    "benchmark": "node src/benchmark.js",
-    "md": "runmd --watch --output README.md src/README_js.md",
-    "prepare": "node src/build.js && runmd --output README.md src/README_js.md",
-    "release": "standard-version",
-    "test": "mocha src/test.js"
+    "atlas": "mocha --opts '{}' ./test/manual/atlas_connectivity.test.js",
+    "bench": "node test/benchmarks/driverBench/",
+    "check:kerberos": "mocha --opts '{}' -t 60000 test/manual/kerberos.test.js",
+    "check:ldap": "mocha --opts '{}' test/manual/ldap.test.js",
+    "check:tls": "mocha --opts '{}' test/manual/tls_support.test.js",
+    "coverage": "istanbul cover mongodb-test-runner -- -t 60000 test/core test/unit test/functional",
+    "format": "prettier --print-width 100 --tab-width 2 --single-quote --write 'test/**/*.js' 'lib/**/*.js'",
+    "generate-evergreen": "node .evergreen/generate_evergreen_tasks.js",
+    "lint": "eslint -v && eslint lib test",
+    "release": "standard-version -i HISTORY.md",
+    "test": "npm run lint && mocha --recursive test/functional test/unit test/core",
+    "test-nolint": "mocha --recursive test/functional test/unit test/core"
   },
-  "version": "2.4.6"
+  "version": "3.6.1"
 }
