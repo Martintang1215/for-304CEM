@@ -1,499 +1,412 @@
-[![npm](https://nodei.co/npm/mongodb.png?downloads=true&downloadRank=true)](https://nodei.co/npm/mongodb/) [![npm](https://nodei.co/npm-dl/mongodb.png?months=6&height=3)](https://nodei.co/npm/mongodb/)
+semver(1) -- The semantic versioner for npm
+===========================================
 
-[![Build Status](https://secure.travis-ci.org/mongodb/node-mongodb-native.svg?branch=2.1)](http://travis-ci.org/mongodb/node-mongodb-native)
-[![Coverage Status](https://coveralls.io/repos/github/mongodb/node-mongodb-native/badge.svg?branch=2.1)](https://coveralls.io/github/mongodb/node-mongodb-native?branch=2.1)
-[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mongodb/node-mongodb-native?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
-
-# Description
-
-The official [MongoDB](https://www.mongodb.com/) driver for Node.js. Provides a high-level API on top of [mongodb-core](https://www.npmjs.com/package/mongodb-core) that is meant for end users.
-
-**NOTE: v3.x was recently released with breaking API changes. You can find a list of changes [here](CHANGES_3.0.0.md).**
-
-## MongoDB Node.JS Driver
-
-| what          | where                                          |
-|---------------|------------------------------------------------|
-| documentation | http://mongodb.github.io/node-mongodb-native  |
-| api-doc        | http://mongodb.github.io/node-mongodb-native/3.1/api  |
-| source        | https://github.com/mongodb/node-mongodb-native |
-| mongodb       | http://www.mongodb.org                        |
-
-### Bugs / Feature Requests
-
-Think you’ve found a bug? Want to see a new feature in `node-mongodb-native`? Please open a
-case in our issue management tool, JIRA:
-
-- Create an account and login [jira.mongodb.org](https://jira.mongodb.org).
-- Navigate to the NODE project [jira.mongodb.org/browse/NODE](https://jira.mongodb.org/browse/NODE).
-- Click **Create Issue** - Please provide as much information as possible about the issue type and how to reproduce it.
-
-Bug reports in JIRA for all driver projects (i.e. NODE, PYTHON, CSHARP, JAVA) and the
-Core Server (i.e. SERVER) project are **public**.
-
-### Support / Feedback
-
-For issues with, questions about, or feedback for the Node.js driver, please look into our [support channels](https://docs.mongodb.com/manual/support). Please do not email any of the driver developers directly with issues or questions - you're more likely to get an answer on the [MongoDB Community Forums](https://community.mongodb.com/tags/c/drivers-odms-connectors/7/node-js-driver).
-
-### Change Log
-
-Change history can be found in [`HISTORY.md`](HISTORY.md).
-
-### Compatibility
-
-For version compatibility matrices, please refer to the following links:
-
- * [MongoDB](https://docs.mongodb.com/ecosystem/drivers/driver-compatibility-reference/#reference-compatibility-mongodb-node)
- * [NodeJS](https://docs.mongodb.com/ecosystem/drivers/driver-compatibility-reference/#reference-compatibility-language-node)
-
-# Installation
-
-The recommended way to get started using the Node.js 3.0 driver is by using the `npm` (Node Package Manager) to install the dependency in your project.
-
-## MongoDB Driver
-
-Given that you have created your own project using `npm init` we install the MongoDB driver and its dependencies by executing the following `npm` command.
+## Install
 
 ```bash
-npm install mongodb --save
-```
+npm install --save semver
+````
 
-This will download the MongoDB driver and add a dependency entry in your `package.json` file.
+## Usage
 
-You can also use the [Yarn](https://yarnpkg.com/en) package manager.
-
-## Troubleshooting
-
-The MongoDB driver depends on several other packages. These are:
-
-* [mongodb-core](https://github.com/mongodb-js/mongodb-core)
-* [bson](https://github.com/mongodb/js-bson)
-* [kerberos](https://github.com/mongodb-js/kerberos)
-* [node-gyp](https://github.com/nodejs/node-gyp)
-
-The `kerberos` package is a C++ extension that requires a build environment to be installed on your system. You must be able to build Node.js itself in order to compile and install the `kerberos` module. Furthermore, the `kerberos` module requires the MIT Kerberos package to correctly compile on UNIX operating systems. Consult your UNIX operation system package manager for what libraries to install.
-
-**Windows already contains the SSPI API used for Kerberos authentication. However, you will need to install a full compiler tool chain using Visual Studio C++ to correctly install the Kerberos extension.**
-
-### Diagnosing on UNIX
-
-If you don’t have the build-essentials, this module won’t build. In the case of Linux, you will need gcc, g++, Node.js with all the headers and Python. The easiest way to figure out what’s missing is by trying to build the Kerberos project. You can do this by performing the following steps.
-
-```bash
-git clone https://github.com/mongodb-js/kerberos
-cd kerberos
-npm install
-```
-
-If all the steps complete, you have the right toolchain installed. If you get the error "node-gyp not found," you need to install `node-gyp` globally:
-
-```bash
-npm install -g node-gyp
-```
-
-If it correctly compiles and runs the tests you are golden. We can now try to install the `mongod` driver by performing the following command.
-
-```bash
-cd yourproject
-npm install mongodb --save
-```
-
-If it still fails the next step is to examine the npm log. Rerun the command but in this case in verbose mode.
-
-```bash
-npm --loglevel verbose install mongodb
-```
-
-This will print out all the steps npm is performing while trying to install the module.
-
-### Diagnosing on Windows
-
-A compiler tool chain known to work for compiling `kerberos` on Windows is the following.
-
-* Visual Studio C++ 2010 (do not use higher versions)
-* Windows 7 64bit SDK
-* Python 2.7 or higher
-
-Open the Visual Studio command prompt. Ensure `node.exe` is in your path and install `node-gyp`.
-
-```bash
-npm install -g node-gyp
-```
-
-Next, you will have to build the project manually to test it. Clone the repo, install dependencies and rebuild:
-
-```bash
-git clone https://github.com/christkv/kerberos.git
-cd kerberos
-npm install
-node-gyp rebuild
-```
-
-This should rebuild the driver successfully if you have everything set up correctly.
-
-### Other possible issues
-
-Your Python installation might be hosed making gyp break. Test your deployment environment first by trying to build Node.js itself on the server in question, as this should unearth any issues with broken packages (and there are a lot of broken packages out there).
-
-Another tip is to ensure your user has write permission to wherever the Node.js modules are being installed.
-
-## Quick Start
-
-This guide will show you how to set up a simple application using Node.js and MongoDB. Its scope is only how to set up the driver and perform the simple CRUD operations. For more in-depth coverage, see the [tutorials](docs/reference/content/tutorials/main.md).
-
-### Create the `package.json` file
-
-First, create a directory where your application will live.
-
-```bash
-mkdir myproject
-cd myproject
-```
-
-Enter the following command and answer the questions to create the initial structure for your new project:
-
-```bash
-npm init
-```
-
-Next, install the driver dependency.
-
-```bash
-npm install mongodb --save
-```
-
-You should see **NPM** download a lot of files. Once it's done you'll find all the downloaded packages under the **node_modules** directory.
-
-### Start a MongoDB Server
-
-For complete MongoDB installation instructions, see [the manual](https://docs.mongodb.org/manual/installation/).
-
-1. Download the right MongoDB version from [MongoDB](https://www.mongodb.org/downloads)
-2. Create a database directory (in this case under **/data**).
-3. Install and start a ``mongod`` process.
-
-```bash
-mongod --dbpath=/data
-```
-
-You should see the **mongod** process start up and print some status information.
-
-### Connect to MongoDB
-
-Create a new **app.js** file and add the following code to try out some basic CRUD
-operations using the MongoDB driver.
-
-Add code to connect to the server and the database **myproject**:
+As a node module:
 
 ```js
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
+const semver = require('semver')
 
-// Connection URL
-const url = 'mongodb://localhost:27017';
-
-// Database Name
-const dbName = 'myproject';
-
-// Use connect method to connect to the server
-MongoClient.connect(url, function(err, client) {
-  assert.equal(null, err);
-  console.log("Connected successfully to server");
-
-  const db = client.db(dbName);
-
-  client.close();
-});
+semver.valid('1.2.3') // '1.2.3'
+semver.valid('a.b.c') // null
+semver.clean('  =v1.2.3   ') // '1.2.3'
+semver.satisfies('1.2.3', '1.x || >=2.5.0 || 5.0.0 - 7.2.3') // true
+semver.gt('1.2.3', '9.8.7') // false
+semver.lt('1.2.3', '9.8.7') // true
+semver.minVersion('>=1.0.0') // '1.0.0'
+semver.valid(semver.coerce('v2')) // '2.0.0'
+semver.valid(semver.coerce('42.6.7.9.3-alpha')) // '42.6.7'
 ```
 
-Run your app from the command line with:
+As a command-line utility:
+
+```
+$ semver -h
+
+A JavaScript implementation of the https://semver.org/ specification
+Copyright Isaac Z. Schlueter
+
+Usage: semver [options] <version> [<version> [...]]
+Prints valid versions sorted by SemVer precedence
+
+Options:
+-r --range <range>
+        Print versions that match the specified range.
+
+-i --increment [<level>]
+        Increment a version by the specified level.  Level can
+        be one of: major, minor, patch, premajor, preminor,
+        prepatch, or prerelease.  Default level is 'patch'.
+        Only one version may be specified.
+
+--preid <identifier>
+        Identifier to be used to prefix premajor, preminor,
+        prepatch or prerelease version increments.
+
+-l --loose
+        Interpret versions and ranges loosely
+
+-p --include-prerelease
+        Always include prerelease versions in range matching
+
+-c --coerce
+        Coerce a string into SemVer if possible
+        (does not imply --loose)
+
+Program exits successfully if any valid version satisfies
+all supplied ranges, and prints all satisfying versions.
+
+If no satisfying versions are found, then exits failure.
+
+Versions are printed in ascending order, so supplying
+multiple versions to the utility will just sort them.
+```
+
+## Versions
+
+A "version" is described by the `v2.0.0` specification found at
+<https://semver.org/>.
+
+A leading `"="` or `"v"` character is stripped off and ignored.
+
+## Ranges
+
+A `version range` is a set of `comparators` which specify versions
+that satisfy the range.
+
+A `comparator` is composed of an `operator` and a `version`.  The set
+of primitive `operators` is:
+
+* `<` Less than
+* `<=` Less than or equal to
+* `>` Greater than
+* `>=` Greater than or equal to
+* `=` Equal.  If no operator is specified, then equality is assumed,
+  so this operator is optional, but MAY be included.
+
+For example, the comparator `>=1.2.7` would match the versions
+`1.2.7`, `1.2.8`, `2.5.3`, and `1.3.9`, but not the versions `1.2.6`
+or `1.1.0`.
+
+Comparators can be joined by whitespace to form a `comparator set`,
+which is satisfied by the **intersection** of all of the comparators
+it includes.
+
+A range is composed of one or more comparator sets, joined by `||`.  A
+version matches a range if and only if every comparator in at least
+one of the `||`-separated comparator sets is satisfied by the version.
+
+For example, the range `>=1.2.7 <1.3.0` would match the versions
+`1.2.7`, `1.2.8`, and `1.2.99`, but not the versions `1.2.6`, `1.3.0`,
+or `1.1.0`.
+
+The range `1.2.7 || >=1.2.9 <2.0.0` would match the versions `1.2.7`,
+`1.2.9`, and `1.4.6`, but not the versions `1.2.8` or `2.0.0`.
+
+### Prerelease Tags
+
+If a version has a prerelease tag (for example, `1.2.3-alpha.3`) then
+it will only be allowed to satisfy comparator sets if at least one
+comparator with the same `[major, minor, patch]` tuple also has a
+prerelease tag.
+
+For example, the range `>1.2.3-alpha.3` would be allowed to match the
+version `1.2.3-alpha.7`, but it would *not* be satisfied by
+`3.4.5-alpha.9`, even though `3.4.5-alpha.9` is technically "greater
+than" `1.2.3-alpha.3` according to the SemVer sort rules.  The version
+range only accepts prerelease tags on the `1.2.3` version.  The
+version `3.4.5` *would* satisfy the range, because it does not have a
+prerelease flag, and `3.4.5` is greater than `1.2.3-alpha.7`.
+
+The purpose for this behavior is twofold.  First, prerelease versions
+frequently are updated very quickly, and contain many breaking changes
+that are (by the author's design) not yet fit for public consumption.
+Therefore, by default, they are excluded from range matching
+semantics.
+
+Second, a user who has opted into using a prerelease version has
+clearly indicated the intent to use *that specific* set of
+alpha/beta/rc versions.  By including a prerelease tag in the range,
+the user is indicating that they are aware of the risk.  However, it
+is still not appropriate to assume that they have opted into taking a
+similar risk on the *next* set of prerelease versions.
+
+Note that this behavior can be suppressed (treating all prerelease
+versions as if they were normal versions, for the purpose of range
+matching) by setting the `includePrerelease` flag on the options
+object to any
+[functions](https://github.com/npm/node-semver#functions) that do
+range matching.
+
+#### Prerelease Identifiers
+
+The method `.inc` takes an additional `identifier` string argument that
+will append the value of the string as a prerelease identifier:
+
+```javascript
+semver.inc('1.2.3', 'prerelease', 'beta')
+// '1.2.4-beta.0'
+```
+
+command-line example:
 
 ```bash
-node app.js
+$ semver 1.2.3 -i prerelease --preid beta
+1.2.4-beta.0
 ```
 
-The application should print **Connected successfully to server** to the console.
-
-### Insert a Document
-
-Add to **app.js** the following function which uses the **insertMany**
-method to add three documents to the **documents** collection.
-
-```js
-const insertDocuments = function(db, callback) {
-  // Get the documents collection
-  const collection = db.collection('documents');
-  // Insert some documents
-  collection.insertMany([
-    {a : 1}, {a : 2}, {a : 3}
-  ], function(err, result) {
-    assert.equal(err, null);
-    assert.equal(3, result.result.n);
-    assert.equal(3, result.ops.length);
-    console.log("Inserted 3 documents into the collection");
-    callback(result);
-  });
-}
-```
-
-The **insert** command returns an object with the following fields:
-
-* **result** Contains the result document from MongoDB
-* **ops** Contains the documents inserted with added **_id** fields
-* **connection** Contains the connection used to perform the insert
-
-Add the following code to call the **insertDocuments** function:
-
-```js
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-
-// Connection URL
-const url = 'mongodb://localhost:27017';
-
-// Database Name
-const dbName = 'myproject';
-
-// Use connect method to connect to the server
-MongoClient.connect(url, function(err, client) {
-  assert.equal(null, err);
-  console.log("Connected successfully to server");
-
-  const db = client.db(dbName);
-
-  insertDocuments(db, function() {
-    client.close();
-  });
-});
-```
-
-Run the updated **app.js** file:
+Which then can be used to increment further:
 
 ```bash
-node app.js
+$ semver 1.2.4-beta.0 -i prerelease
+1.2.4-beta.1
 ```
 
-The operation returns the following output:
+### Advanced Range Syntax
 
-```bash
-Connected successfully to server
-Inserted 3 documents into the collection
+Advanced range syntax desugars to primitive comparators in
+deterministic ways.
+
+Advanced ranges may be combined in the same way as primitive
+comparators using white space or `||`.
+
+#### Hyphen Ranges `X.Y.Z - A.B.C`
+
+Specifies an inclusive set.
+
+* `1.2.3 - 2.3.4` := `>=1.2.3 <=2.3.4`
+
+If a partial version is provided as the first version in the inclusive
+range, then the missing pieces are replaced with zeroes.
+
+* `1.2 - 2.3.4` := `>=1.2.0 <=2.3.4`
+
+If a partial version is provided as the second version in the
+inclusive range, then all versions that start with the supplied parts
+of the tuple are accepted, but nothing that would be greater than the
+provided tuple parts.
+
+* `1.2.3 - 2.3` := `>=1.2.3 <2.4.0`
+* `1.2.3 - 2` := `>=1.2.3 <3.0.0`
+
+#### X-Ranges `1.2.x` `1.X` `1.2.*` `*`
+
+Any of `X`, `x`, or `*` may be used to "stand in" for one of the
+numeric values in the `[major, minor, patch]` tuple.
+
+* `*` := `>=0.0.0` (Any version satisfies)
+* `1.x` := `>=1.0.0 <2.0.0` (Matching major version)
+* `1.2.x` := `>=1.2.0 <1.3.0` (Matching major and minor versions)
+
+A partial version range is treated as an X-Range, so the special
+character is in fact optional.
+
+* `""` (empty string) := `*` := `>=0.0.0`
+* `1` := `1.x.x` := `>=1.0.0 <2.0.0`
+* `1.2` := `1.2.x` := `>=1.2.0 <1.3.0`
+
+#### Tilde Ranges `~1.2.3` `~1.2` `~1`
+
+Allows patch-level changes if a minor version is specified on the
+comparator.  Allows minor-level changes if not.
+
+* `~1.2.3` := `>=1.2.3 <1.(2+1).0` := `>=1.2.3 <1.3.0`
+* `~1.2` := `>=1.2.0 <1.(2+1).0` := `>=1.2.0 <1.3.0` (Same as `1.2.x`)
+* `~1` := `>=1.0.0 <(1+1).0.0` := `>=1.0.0 <2.0.0` (Same as `1.x`)
+* `~0.2.3` := `>=0.2.3 <0.(2+1).0` := `>=0.2.3 <0.3.0`
+* `~0.2` := `>=0.2.0 <0.(2+1).0` := `>=0.2.0 <0.3.0` (Same as `0.2.x`)
+* `~0` := `>=0.0.0 <(0+1).0.0` := `>=0.0.0 <1.0.0` (Same as `0.x`)
+* `~1.2.3-beta.2` := `>=1.2.3-beta.2 <1.3.0` Note that prereleases in
+  the `1.2.3` version will be allowed, if they are greater than or
+  equal to `beta.2`.  So, `1.2.3-beta.4` would be allowed, but
+  `1.2.4-beta.2` would not, because it is a prerelease of a
+  different `[major, minor, patch]` tuple.
+
+#### Caret Ranges `^1.2.3` `^0.2.5` `^0.0.4`
+
+Allows changes that do not modify the left-most non-zero digit in the
+`[major, minor, patch]` tuple.  In other words, this allows patch and
+minor updates for versions `1.0.0` and above, patch updates for
+versions `0.X >=0.1.0`, and *no* updates for versions `0.0.X`.
+
+Many authors treat a `0.x` version as if the `x` were the major
+"breaking-change" indicator.
+
+Caret ranges are ideal when an author may make breaking changes
+between `0.2.4` and `0.3.0` releases, which is a common practice.
+However, it presumes that there will *not* be breaking changes between
+`0.2.4` and `0.2.5`.  It allows for changes that are presumed to be
+additive (but non-breaking), according to commonly observed practices.
+
+* `^1.2.3` := `>=1.2.3 <2.0.0`
+* `^0.2.3` := `>=0.2.3 <0.3.0`
+* `^0.0.3` := `>=0.0.3 <0.0.4`
+* `^1.2.3-beta.2` := `>=1.2.3-beta.2 <2.0.0` Note that prereleases in
+  the `1.2.3` version will be allowed, if they are greater than or
+  equal to `beta.2`.  So, `1.2.3-beta.4` would be allowed, but
+  `1.2.4-beta.2` would not, because it is a prerelease of a
+  different `[major, minor, patch]` tuple.
+* `^0.0.3-beta` := `>=0.0.3-beta <0.0.4`  Note that prereleases in the
+  `0.0.3` version *only* will be allowed, if they are greater than or
+  equal to `beta`.  So, `0.0.3-pr.2` would be allowed.
+
+When parsing caret ranges, a missing `patch` value desugars to the
+number `0`, but will allow flexibility within that value, even if the
+major and minor versions are both `0`.
+
+* `^1.2.x` := `>=1.2.0 <2.0.0`
+* `^0.0.x` := `>=0.0.0 <0.1.0`
+* `^0.0` := `>=0.0.0 <0.1.0`
+
+A missing `minor` and `patch` values will desugar to zero, but also
+allow flexibility within those values, even if the major version is
+zero.
+
+* `^1.x` := `>=1.0.0 <2.0.0`
+* `^0.x` := `>=0.0.0 <1.0.0`
+
+### Range Grammar
+
+Putting all this together, here is a Backus-Naur grammar for ranges,
+for the benefit of parser authors:
+
+```bnf
+range-set  ::= range ( logical-or range ) *
+logical-or ::= ( ' ' ) * '||' ( ' ' ) *
+range      ::= hyphen | simple ( ' ' simple ) * | ''
+hyphen     ::= partial ' - ' partial
+simple     ::= primitive | partial | tilde | caret
+primitive  ::= ( '<' | '>' | '>=' | '<=' | '=' ) partial
+partial    ::= xr ( '.' xr ( '.' xr qualifier ? )? )?
+xr         ::= 'x' | 'X' | '*' | nr
+nr         ::= '0' | ['1'-'9'] ( ['0'-'9'] ) *
+tilde      ::= '~' partial
+caret      ::= '^' partial
+qualifier  ::= ( '-' pre )? ( '+' build )?
+pre        ::= parts
+build      ::= parts
+parts      ::= part ( '.' part ) *
+part       ::= nr | [-0-9A-Za-z]+
 ```
 
-### Find All Documents
+## Functions
 
-Add a query that returns all the documents.
+All methods and classes take a final `options` object argument.  All
+options in this object are `false` by default.  The options supported
+are:
 
-```js
-const findDocuments = function(db, callback) {
-  // Get the documents collection
-  const collection = db.collection('documents');
-  // Find some documents
-  collection.find({}).toArray(function(err, docs) {
-    assert.equal(err, null);
-    console.log("Found the following records");
-    console.log(docs)
-    callback(docs);
-  });
-}
-```
+- `loose`  Be more forgiving about not-quite-valid semver strings.
+  (Any resulting output will always be 100% strict compliant, of
+  course.)  For backwards compatibility reasons, if the `options`
+  argument is a boolean value instead of an object, it is interpreted
+  to be the `loose` param.
+- `includePrerelease`  Set to suppress the [default
+  behavior](https://github.com/npm/node-semver#prerelease-tags) of
+  excluding prerelease tagged versions from ranges unless they are
+  explicitly opted into.
 
-This query returns all the documents in the **documents** collection. Add the **findDocument** method to the **MongoClient.connect** callback:
+Strict-mode Comparators and Ranges will be strict about the SemVer
+strings that they parse.
 
-```js
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
+* `valid(v)`: Return the parsed version, or null if it's not valid.
+* `inc(v, release)`: Return the version incremented by the release
+  type (`major`,   `premajor`, `minor`, `preminor`, `patch`,
+  `prepatch`, or `prerelease`), or null if it's not valid
+  * `premajor` in one call will bump the version up to the next major
+    version and down to a prerelease of that major version.
+    `preminor`, and `prepatch` work the same way.
+  * If called from a non-prerelease version, the `prerelease` will work the
+    same as `prepatch`. It increments the patch version, then makes a
+    prerelease. If the input version is already a prerelease it simply
+    increments it.
+* `prerelease(v)`: Returns an array of prerelease components, or null
+  if none exist. Example: `prerelease('1.2.3-alpha.1') -> ['alpha', 1]`
+* `major(v)`: Return the major version number.
+* `minor(v)`: Return the minor version number.
+* `patch(v)`: Return the patch version number.
+* `intersects(r1, r2, loose)`: Return true if the two supplied ranges
+  or comparators intersect.
+* `parse(v)`: Attempt to parse a string as a semantic version, returning either
+  a `SemVer` object or `null`.
 
-// Connection URL
-const url = 'mongodb://localhost:27017';
+### Comparison
 
-// Database Name
-const dbName = 'myproject';
+* `gt(v1, v2)`: `v1 > v2`
+* `gte(v1, v2)`: `v1 >= v2`
+* `lt(v1, v2)`: `v1 < v2`
+* `lte(v1, v2)`: `v1 <= v2`
+* `eq(v1, v2)`: `v1 == v2` This is true if they're logically equivalent,
+  even if they're not the exact same string.  You already know how to
+  compare strings.
+* `neq(v1, v2)`: `v1 != v2` The opposite of `eq`.
+* `cmp(v1, comparator, v2)`: Pass in a comparison string, and it'll call
+  the corresponding function above.  `"==="` and `"!=="` do simple
+  string comparison, but are included for completeness.  Throws if an
+  invalid comparison string is provided.
+* `compare(v1, v2)`: Return `0` if `v1 == v2`, or `1` if `v1` is greater, or `-1` if
+  `v2` is greater.  Sorts in ascending order if passed to `Array.sort()`.
+* `rcompare(v1, v2)`: The reverse of compare.  Sorts an array of versions
+  in descending order when passed to `Array.sort()`.
+* `diff(v1, v2)`: Returns difference between two versions by the release type
+  (`major`, `premajor`, `minor`, `preminor`, `patch`, `prepatch`, or `prerelease`),
+  or null if the versions are the same.
 
-// Use connect method to connect to the server
-MongoClient.connect(url, function(err, client) {
-  assert.equal(null, err);
-  console.log("Connected correctly to server");
+### Comparators
 
-  const db = client.db(dbName);
+* `intersects(comparator)`: Return true if the comparators intersect
 
-  insertDocuments(db, function() {
-    findDocuments(db, function() {
-      client.close();
-    });
-  });
-});
-```
+### Ranges
 
-### Find Documents with a Query Filter
+* `validRange(range)`: Return the valid range or null if it's not valid
+* `satisfies(version, range)`: Return true if the version satisfies the
+  range.
+* `maxSatisfying(versions, range)`: Return the highest version in the list
+  that satisfies the range, or `null` if none of them do.
+* `minSatisfying(versions, range)`: Return the lowest version in the list
+  that satisfies the range, or `null` if none of them do.
+* `minVersion(range)`: Return the lowest version that can possibly match
+  the given range.
+* `gtr(version, range)`: Return `true` if version is greater than all the
+  versions possible in the range.
+* `ltr(version, range)`: Return `true` if version is less than all the
+  versions possible in the range.
+* `outside(version, range, hilo)`: Return true if the version is outside
+  the bounds of the range in either the high or low direction.  The
+  `hilo` argument must be either the string `'>'` or `'<'`.  (This is
+  the function called by `gtr` and `ltr`.)
+* `intersects(range)`: Return true if any of the ranges comparators intersect
 
-Add a query filter to find only documents which meet the query criteria.
+Note that, since ranges may be non-contiguous, a version might not be
+greater than a range, less than a range, *or* satisfy a range!  For
+example, the range `1.2 <1.2.9 || >2.0.0` would have a hole from `1.2.9`
+until `2.0.0`, so the version `1.2.10` would not be greater than the
+range (because `2.0.1` satisfies, which is higher), nor less than the
+range (since `1.2.8` satisfies, which is lower), and it also does not
+satisfy the range.
 
-```js
-const findDocuments = function(db, callback) {
-  // Get the documents collection
-  const collection = db.collection('documents');
-  // Find some documents
-  collection.find({'a': 3}).toArray(function(err, docs) {
-    assert.equal(err, null);
-    console.log("Found the following records");
-    console.log(docs);
-    callback(docs);
-  });
-}
-```
+If you want to know if a version satisfies or does not satisfy a
+range, use the `satisfies(version, range)` function.
 
-Only the documents which match ``'a' : 3`` should be returned.
+### Coercion
 
-### Update a document
+* `coerce(version)`: Coerces a string to semver if possible
 
-The following operation updates a document in the **documents** collection.
-
-```js
-const updateDocument = function(db, callback) {
-  // Get the documents collection
-  const collection = db.collection('documents');
-  // Update document where a is 2, set b equal to 1
-  collection.updateOne({ a : 2 }
-    , { $set: { b : 1 } }, function(err, result) {
-    assert.equal(err, null);
-    assert.equal(1, result.result.n);
-    console.log("Updated the document with the field a equal to 2");
-    callback(result);
-  });
-}
-```
-
-The method updates the first document where the field **a** is equal to **2** by adding a new field **b** to the document set to **1**. Next, update the callback function from **MongoClient.connect** to include the update method.
-
-```js
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-
-// Connection URL
-const url = 'mongodb://localhost:27017';
-
-// Database Name
-const dbName = 'myproject';
-
-// Use connect method to connect to the server
-MongoClient.connect(url, function(err, client) {
-  assert.equal(null, err);
-  console.log("Connected successfully to server");
-
-  const db = client.db(dbName);
-
-  insertDocuments(db, function() {
-    updateDocument(db, function() {
-      client.close();
-    });
-  });
-});
-```
-
-### Remove a document
-
-Remove the document where the field **a** is equal to **3**.
-
-```js
-const removeDocument = function(db, callback) {
-  // Get the documents collection
-  const collection = db.collection('documents');
-  // Delete document where a is 3
-  collection.deleteOne({ a : 3 }, function(err, result) {
-    assert.equal(err, null);
-    assert.equal(1, result.result.n);
-    console.log("Removed the document with the field a equal to 3");
-    callback(result);
-  });
-}
-```
-
-Add the new method to the **MongoClient.connect** callback function.
-
-```js
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-
-// Connection URL
-const url = 'mongodb://localhost:27017';
-
-// Database Name
-const dbName = 'myproject';
-
-// Use connect method to connect to the server
-MongoClient.connect(url, function(err, client) {
-  assert.equal(null, err);
-  console.log("Connected successfully to server");
-
-  const db = client.db(dbName);
-
-  insertDocuments(db, function() {
-    updateDocument(db, function() {
-      removeDocument(db, function() {
-        client.close();
-      });
-    });
-  });
-});
-```
-
-### Index a Collection
-
-[Indexes](https://docs.mongodb.org/manual/indexes/) can improve your application's
-performance. The following function creates an index on the **a** field in the
-**documents** collection.
-
-```js
-const indexCollection = function(db, callback) {
-  db.collection('documents').createIndex(
-    { "a": 1 },
-      null,
-      function(err, results) {
-        console.log(results);
-        callback();
-    }
-  );
-};
-```
-
-Add the ``indexCollection`` method to your app:
-
-```js
-const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-
-// Connection URL
-const url = 'mongodb://localhost:27017';
-
-const dbName = 'myproject';
-
-// Use connect method to connect to the server
-MongoClient.connect(url, function(err, client) {
-  assert.equal(null, err);
-  console.log("Connected successfully to server");
-
-  const db = client.db(dbName);
-
-  insertDocuments(db, function() {
-    indexCollection(db, function() {
-      client.close();
-    });
-  });
-});
-```
-
-For more detailed information, see the [tutorials](docs/reference/content/tutorials/main.md).
-
-## Next Steps
-
- * [MongoDB Documentation](http://mongodb.org)
- * [Read about Schemas](http://learnmongodbthehardway.com)
- * [Star us on GitHub](https://github.com/mongodb/node-mongodb-native)
-
-## License
-
-[Apache 2.0](LICENSE.md)
-
-© 2009-2012 Christian Amor Kvalheim  
-© 2012-present MongoDB [Contributors](CONTRIBUTORS.md)
+This aims to provide a very forgiving translation of a non-semver string to
+semver. It looks for the first digit in a string, and consumes all
+remaining characters which satisfy at least a partial semver (e.g., `1`,
+`1.2`, `1.2.3`) up to the max permitted length (256 characters).  Longer
+versions are simply truncated (`4.6.3.9.2-alpha2` becomes `4.6.3`).  All
+surrounding text is simply ignored (`v3.4 replaces v3.3.1` becomes
+`3.4.0`).  Only text which lacks digits will fail coercion (`version one`
+is not valid).  The maximum  length for any semver component considered for
+coercion is 16 characters; longer components will be ignored
+(`10000000000000000.4.7.4` becomes `4.7.4`).  The maximum value for any
+semver component is `Number.MAX_SAFE_INTEGER || (2**53 - 1)`; higher value
+components are invalid (`9999999999999999.4.7.4` is likely invalid).
