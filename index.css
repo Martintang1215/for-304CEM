@@ -1,0 +1,88 @@
+.car_li {
+	width: 285px;
+	height: 319px;
+	float: left;
+	margin-left: 7px;
+	margin-top: 5px;
+	list-style-type:none;
+}
+
+.car_li:img {
+	width: 285px;
+	height: 193px;
+	float: left;
+}
+
+.car-info {
+	width: 100%;
+	height: 126px;
+	border: 1px solid rgba(0, 0, 0, .05);
+	box-sizing: border-box;
+}
+
+.li_h2 {
+	font-size: 17px;
+	color: #495056;
+	font-weight: 400;
+	padding: 1px 0 6px 4px;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+.t-i {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.t-i {
+	color: #a5abb2;
+	font-size: 14px;
+	padding-left: 4px;
+	padding-bottom: 2px;
+}
+
+.carlist li .t-price,
+.carlist li a.car-a .t-i {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+<style>.carlist li .t-price {
+	height: 30px;
+	font-size: 20px;
+	color: #fa5428;
+	padding-left: 4px;
+	overflow: hidden;
+}
+
+.t-price p {
+	float: left;
+	line-height: 30px;
+}
+
+.t-price em,
+.t-price span {
+	font-size: 14px;
+}
+
+.t-price em.line-through {
+	text-decoration: line-through;
+}
+
+.t-price em {
+	float: left;
+	margin-top: 5px;
+	margin-left: 10px;
+	color: #a5abb2;
+}
+
+.t-price em,
+.t-price span {
+	font-size: 14px;
+}
+
+.collection-img {
+	margin-left: 139px;
+	margin-top: -17px;
+}
